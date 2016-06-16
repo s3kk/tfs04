@@ -321,26 +321,44 @@ uint64_t IOLoginData::createAccount(std::string name, std::string password)
 	return db->getLastInsertId();
 }
 
-void IOLoginData::removePremium(Account& account)
+void IOLoginData::removePremium(Account account)
 {
+	bool save = false;
 	uint64_t timeNow = time(NULL);
-	if(account.premiumDays > 0 && account.premiumDays < 65535)
+	if(account.premiumDays != 0 && account.premiumDays != 65535)
 	{
-		uint32_t days = (uint32_t)std::ceil((timeNow - account.lastDay) / 86400.);
-		if(days > 0)
+		if(account.lastDay == 0)
 		{
-			if(account.premiumDays >= days)
-				account.premiumDays -= days;
-			else
-				account.premiumDays = 0;
-
 			account.lastDay = timeNow;
+			save = true;
+		}
+		else
+		{
+			uint32_t days = (timeNow - account.lastDay) / 86400;
+			if(days > 0)
+			{
+				if(account.premiumDays >= days)
+				{
+					account.premiumDays -= days;
+					uint32_t remainder = (timeNow - account.lastDay) % 86400;
+					account.lastDay = timeNow - remainder;
+				}
+				else
+				{
+					account.premiumDays = 0;
+					account.lastDay = 0;
+				}
+				save = true;
+			}
 		}
 	}
-	else
-		account.lastDay = timeNow;
+	else if(account.lastDay != 0)
+	{
+		account.lastDay = 0;
+		save = true;
+	}
 
-	if(!saveAccount(account))
+	if(save && !saveAccount(account))
 		std::clog << "> ERROR: Failed to save account: " << account.name << "!" << std::endl;
 }
 
@@ -1098,28 +1116,12 @@ bool IOLoginData::playerDeath(Player* _player, const DeathList& dl)
 		size = tmp;
 
 	DeathList wl;
-	bool war = false;
 	uint64_t deathId = db->getLastInsertId();
 	for(DeathList::const_iterator it = dl.begin(); i < size && it != dl.end(); ++it, ++i)
 	{
 		query.str("");
 		query << "INSERT INTO `killers` (`death_id`, `final_hit`, `unjustified`" << ", `war`"
-			<< ") VALUES (" << deathId << ", " << it->isLast() << ", " << it->isUnjustified();
-
-		if(it->isLast()) //last hit is always first and we got stored war data only there
-		{
-			War_t tmp = it->getWar();
-			if(tmp.war && tmp.frags[tmp.type == WAR_GUILD]
-				<= tmp.limit && tmp.frags[tmp.type] <= tmp.limit)
-				war = true;
-		}
-
-		if(war)
-			query << ", " << it->getWar().war;
-		else
-			query << ", 0";
-
-		query << ")";
+			<< ") VALUES (" << deathId << ", " << it->isLast() << ", " << it->isUnjustified() << ", " << it->getWar().war << ")";
 		if(!db->query(query.str()))
 			return false;
 
@@ -1163,7 +1165,7 @@ bool IOLoginData::playerDeath(Player* _player, const DeathList& dl)
 	}
 
 	if(!wl.empty())
-		IOGuild::getInstance()->frag(_player, deathId, wl, war);
+		IOGuild::getInstance()->frag(_player, deathId, wl);
 
 	return trans.commit();
 }

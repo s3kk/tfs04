@@ -324,7 +324,6 @@ class LuaInterface
 		virtual void registerFunctions();
 
 		//lua functions
-		static int32_t luaKeyDown(lua_State* L);
 		static int32_t luaGetCastsOnline(lua_State* L);
 		static int32_t luaDoPlayerSetCastPassword(lua_State* L);
 		static int32_t luaDoPlayerSetCastDescription(lua_State* L);

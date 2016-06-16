@@ -113,8 +113,6 @@ bool House::setOwnerEx(uint32_t guid, bool transfer)
 			return false;
 
 		guid = player->getGuildId();
-		if(player->isVirtual())
-			delete player;
 	}
 
 	if(owner)

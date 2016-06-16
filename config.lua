@@ -4,7 +4,7 @@
 	accountManager = true
 	namelockManager = true
 	newPlayerChooseVoc = true
-	newPlayerChooseTown = true
+	newPlayerChooseTown = false
 	newPlayerDefaultTownId = 1
 	newPlayerLevel = 1
 	newPlayerMagicLevel = 0
@@ -118,8 +118,8 @@
 	sqlDatabase = "forgottenserver"
 	sqlFile = "theforgottenserver.s3db"
 	sqlKeepAlive = 0
-	mysqlReadTimeout = 0
-	mysqlWriteTimeout = 0
+	mysqlReadTimeout = 10
+	mysqlWriteTimeout = 10
 	encryptionType = "plain"
 
 	-- Deathlist

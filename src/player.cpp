@@ -536,7 +536,11 @@ void Player::sendIcons() const
 	}
 
 	if(getZone() == ZONE_PROTECTION)
+	{
 		icons |= ICON_PROTECTIONZONE;
+		if(hasBitSet(ICON_SWORDS, icons))
+			icons &= ~ICON_SWORDS;
+	}
 
 	if(pzLocked)
 		icons |= ICON_PZ;
@@ -3937,7 +3941,7 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 		return true;
 
 	War_t enemy;
-	if(targetPlayer->getEnemy(this, enemy) && (!entry.isLast() || IOGuild::getInstance()->updateWar(enemy)))
+	if(targetPlayer->getEnemy(this, enemy) && (!entry.isLast() || IOGuild::getInstance()->war(enemy)))
 		entry.setWar(enemy);
 
 	if(!entry.isJustify() || !hasCondition(CONDITION_INFIGHT))
@@ -4196,8 +4200,10 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 
 bool Player::hasAttacked(const Player* attacked) const
 {
-	return !hasFlag(PlayerFlag_NotGainInFight) && attacked &&
-		attackedSet.find(attacked->getID()) != attackedSet.end();
+	if (hasFlag(PlayerFlag_NotGainInFight) || !attacked)
+		return false;
+
+	return attackedSet.find(attacked->guid) != attackedSet.end();
 }
 
 void Player::addAttacked(const Player* attacked)
