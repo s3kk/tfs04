@@ -123,12 +123,9 @@ bool argumentsHandler(StringVec args)
 			return false;
 		}
 
-		/* EDITANDO CRÉDITOS */
 		if((*it) == "--version")
 		{
-			std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << "\n"
-		"Compiled with " << BOOST_COMPILER << ".\n"
-		"A server developed by Fir3element and Sekk.\n\n";
+			std::clog << SOFTWARE_NAME << " " << SOFTWARE_VERSION << std::endl << std::endl;
 			return false;
 		}
 
@@ -331,11 +328,7 @@ void otserv(StringVec, ServiceManager* services)
 	}
 #endif
 
-	/* EDITANDO CRÉDITOS */
-	std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << "\n"
-		"Compiled with " << BOOST_COMPILER << ".\n"
-		"A server developed by Fir3element and Sekk.\n\n";
-	
+	std::clog << SOFTWARE_NAME << " " << SOFTWARE_VERSION << std::endl << std::endl;
 	std::stringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
