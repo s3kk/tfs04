@@ -2896,6 +2896,16 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 	msg->put<char>(0xA0);
 	msg->put<uint16_t>(player->getHealth());
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXHEALTH));
+	/*if (player->getPlayerInfo(PLAYERINFO_MAXHEALTH) > 0)
+    {
+        msg->put<uint16_t>(uint16_t(player->getHealth() * 100 / player->getPlayerInfo(PLAYERINFO_MAXHEALTH)));
+        msg->put<uint16_t>(100);
+    }
+    else
+    {
+        msg->put<uint16_t>(0);
+        msg->put<uint16_t>(0);
+    }*/
 	msg->put<uint32_t>(uint32_t(player->getFreeCapacity() * 100));
 	uint64_t experience = player->getExperience();
 	if(experience > 0x7FFFFFFF) // client debugs after 2,147,483,647 exp
@@ -2907,6 +2917,16 @@ void ProtocolGame::AddPlayerStats(NetworkMessage_ptr msg)
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_LEVELPERCENT));
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MANA));
 	msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MAXMANA));
+	/*if (player->getPlayerInfo(PLAYERINFO_MAXMANA) > 0)
+    {
+        msg->put<uint16_t>(player->getPlayerInfo(PLAYERINFO_MANA) * 100 / player->getPlayerInfo(PLAYERINFO_MAXMANA));
+        msg->put<uint16_t>(100);
+    }
+    else
+    {
+        msg->put<uint16_t>(0);
+        msg->put<uint16_t>(0);
+    }*/
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_MAGICLEVEL));
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_MAGICLEVELPERCENT));
 	msg->put<char>(player->getPlayerInfo(PLAYERINFO_SOUL));
