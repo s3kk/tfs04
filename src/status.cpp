@@ -141,6 +141,15 @@ std::string Status::getStatusString(bool sendPlayers) const
 	xmlSetProp(p, (const xmlChar*)"max", (const xmlChar*)buffer);
 	sprintf(buffer, "%d", g_game.getPlayersRecord());
 	xmlSetProp(p, (const xmlChar*)"peak", (const xmlChar*)buffer);
+	
+	/*p = xmlNewNode(NULL,(const xmlChar*)"players");
+	sprintf(buffer, "%d", g_game.getPlayersOnline()+(int32_t)g_config.getNumber(ConfigManager::SPOOF_PLAYERS));
+	xmlSetProp(p, (const xmlChar*)"online", (const xmlChar*)buffer);
+	sprintf(buffer, "%d", (int32_t)g_config.getNumber(ConfigManager::MAX_PLAYERS)+(int32_t)g_config.getNumber(ConfigManager::SPOOF_PLAYERS));
+	xmlSetProp(p, (const xmlChar*)"max", (const xmlChar*)buffer);
+	sprintf(buffer, "%d", g_game.getPlayersRecord()+(int32_t)g_config.getNumber(ConfigManager::SPOOF_PLAYERS));
+	xmlSetProp(p, (const xmlChar*)"peak", (const xmlChar*)buffer);*/
+
 	if(sendPlayers)
 	{
 		std::stringstream ss;

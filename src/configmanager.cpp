@@ -124,6 +124,7 @@ bool ConfigManager::load()
 	m_confNumber[LOGIN_TIMEOUT] = getGlobalNumber("loginTimeout", 5 * 1000);
 	m_confNumber[MAX_MESSAGEBUFFER] = getGlobalNumber("maxMessageBuffer", 4);
 	m_confNumber[MAX_PLAYERS] = getGlobalNumber("maxPlayers", 1000);
+	//m_confNumber[SPOOF_PLAYERS] = getGlobalNumber("spoofPlayers", 0);
 	m_confNumber[DEFAULT_DESPAWNRANGE] = getGlobalNumber("deSpawnRange", 2);
 	m_confNumber[DEFAULT_DESPAWNRADIUS] = getGlobalNumber("deSpawnRadius", 50);
 	m_confNumber[PZ_LOCKED] = getGlobalNumber("pzLocked", 60 * 1000);

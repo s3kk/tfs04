@@ -93,6 +93,7 @@
 	retryTimeout = 5 * 1000
 	loginTimeout = 60 * 1000
 	maxPlayers = 1000
+	-- spoofPlayers = 0
 	motd = "Welcome to the Forgotten Server!"
 	displayOnOrOffAtCharlist = false
 	onePlayerOnlinePerAccount = true
